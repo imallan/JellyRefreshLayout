@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JellyRefreshLayout">
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="jellyColor" format="color" />
+    </declare-styleable>
+</resources>
