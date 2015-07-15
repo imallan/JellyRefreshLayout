@@ -1,6 +1,7 @@
 package uk.co.imallan.jellyrefresh;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -71,7 +72,7 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
             return;
         }
 
-        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_pull_header, null);
+        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_pull_header, null);
         final JellyView jellyView = (JellyView) headerView.findViewById(R.id.jelly);
         final TextView textLoading = (TextView) headerView.findViewById(R.id.text_loading);
         jellyView.setJellyColor(mJellyColor);
