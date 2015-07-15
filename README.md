@@ -15,7 +15,7 @@ repositories {
     }
 }
 dependencies {
-    compile 'com.github.allan1st:JellyRefreshLayout:0.1.0'
+    compile 'com.github.allan1st:JellyRefreshLayout:1.0.0'
 }
 ```
 or Maven
@@ -30,7 +30,7 @@ or Maven
 <dependency>
     <groupId>com.github.allan1st</groupId>
     <artifactId>JellyRefreshLayout</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
