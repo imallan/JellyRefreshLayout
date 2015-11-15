@@ -16,6 +16,8 @@ repositories {
 }
 dependencies {
     compile 'com.github.allan1st:JellyRefreshLayout:1.0.0'
+    // or pre-release
+    // compile 'com.github.allan1st:JellyRefreshLayout:1.1.0'
 }
 ```
 or Maven
