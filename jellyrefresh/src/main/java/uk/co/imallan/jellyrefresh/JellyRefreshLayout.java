@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
@@ -72,8 +73,8 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
             return;
         }
 
-        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_pull_header, null);
-        final JellyView jellyView = (JellyView) headerView.findViewById(R.id.jelly);
+        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(getContext()).inflate(R.layout.new_view_pull_header, null);
+        final JellyViewFrameLayout jellyView = (JellyViewFrameLayout) headerView.findViewById(R.id.jelly);
         final TextView textLoading = (TextView) headerView.findViewById(R.id.text_loading);
         jellyView.setJellyColor(mJellyColor);
         textLoading.setText(mLoadingText);
@@ -106,7 +107,9 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
                                 new Runnable() {
                                     @Override
                                     public void run() {
+                                        textLoading.setAlpha(0.01f);
                                         textLoading.setVisibility(View.VISIBLE);
+                                        textLoading.animate().alpha(1f).setInterpolator(new AccelerateInterpolator()).setDuration(200);
                                     }
                                 }, 120
                         );
