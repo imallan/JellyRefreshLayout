@@ -11,26 +11,20 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * User: Yilun Chen
- * Date: 15/7/9
+ * User: TaurusXi
  */
 public class JellyViewFrameLayout extends FrameLayout {
     Path path;
-
     Paint paint;
-
-    private int minimumHeight = 0;
-
+    private int minimumHeight;
     private int jellyHeight;
 
     public JellyViewFrameLayout(Context context) {
-        super(context);
-        init();
+        this(context, null, 0);
     }
 
     public JellyViewFrameLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public JellyViewFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -63,10 +57,11 @@ public class JellyViewFrameLayout extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int measuredWidth = getMeasuredWidth();
         path.reset();
         path.lineTo(0, minimumHeight);
-        path.quadTo(getMeasuredWidth() / 2, minimumHeight + jellyHeight, getMeasuredWidth(), minimumHeight);
-        path.lineTo(getMeasuredWidth(), 0);
+        path.quadTo(measuredWidth / 2, minimumHeight + jellyHeight, measuredWidth, minimumHeight);
+        path.lineTo(measuredWidth, 0);
         canvas.drawPath(path, paint);
     }
 
