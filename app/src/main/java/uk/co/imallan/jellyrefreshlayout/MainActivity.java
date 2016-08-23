@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,18 +17,29 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Jelly");
-        final JellyRefreshLayout jellyLayout = (JellyRefreshLayout) findViewById(R.id.jelly_refresh);
-        jellyLayout.setRefreshListener(new JellyRefreshLayout.JellyRefreshListener() {
+        final PullToRefreshLayout jellyLayout = (PullToRefreshLayout) findViewById(R.id.jelly_refresh);
+        jellyLayout.setPullToRefreshListener(new PullToRefreshLayout.PullToRefreshListener() {
             @Override
-            public void onRefresh(final JellyRefreshLayout jellyRefreshLayout) {
-                jellyRefreshLayout.postDelayed(new Runnable() {
+            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                pullToRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        jellyRefreshLayout.finishRefreshing();
+                        jellyLayout.finishRefreshing();
                     }
                 }, 3000);
             }
         });
+//      new JellyRefreshLayout.JellyRefreshListener() {
+//            @Override
+//            public void onRefresh(final JellyRefreshLayout jellyRefreshLayout) {
+//                jellyRefreshLayout.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        jellyRefreshLayout.finishRefreshing();
+//                    }
+//                }, 3000);
+//            }
+//        });
     }
 
     @Override

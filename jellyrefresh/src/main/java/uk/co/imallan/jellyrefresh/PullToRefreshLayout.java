@@ -1,8 +1,6 @@
 package uk.co.imallan.jellyrefresh;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -12,53 +10,35 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 /**
  * Created by yilun
  * on 09/07/15.
  */
-class PullToRefreshLayout extends FrameLayout {
+public class PullToRefreshLayout extends FrameLayout {
 
     private float mTouchStartY;
-
     private float mCurrentY;
-
     private View mChildView;
-
     private static DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(10);
-
     private float mPullHeight;
-
     private float mHeaderHeight;
-
     private boolean isRefreshing;
-
     private PullToRefreshListener mPullToRefreshListener;
-
     private PullToRefreshPullingListener mPullToRefreshPullingListener;
-
     private FrameLayout mHeader;
 
     public PullToRefreshLayout(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
@@ -101,11 +81,11 @@ class PullToRefreshLayout extends FrameLayout {
         this.mHeaderHeight = headerHeight;
     }
 
-    public float getmPullHeight() {
+    public float getPullHeight() {
         return mPullHeight;
     }
 
-    public float getmHeaderHeight() {
+    public float getHeaderHeight() {
         return mHeaderHeight;
     }
 
@@ -115,7 +95,10 @@ class PullToRefreshLayout extends FrameLayout {
 
     private void addHeaderContainer() {
         FrameLayout headerContainer = new FrameLayout(getContext());
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        LayoutParams layoutParams = new LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
         layoutParams.gravity = Gravity.TOP;
         headerContainer.setLayoutParams(layoutParams);
 
@@ -158,18 +141,8 @@ class PullToRefreshLayout extends FrameLayout {
         if (mChildView == null) {
             return false;
         }
-        if (Build.VERSION.SDK_INT < 14) {
-            if (mChildView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mChildView;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                        .getTop() < absListView.getPaddingTop());
-            } else {
-                return ViewCompat.canScrollVertically(mChildView, -1) || mChildView.getScrollY() > 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(mChildView, -1);
-        }
+
+        return ViewCompat.canScrollVertically(mChildView, -1);
     }
 
     @Override
@@ -201,6 +174,7 @@ class PullToRefreshLayout extends FrameLayout {
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 mCurrentY = e.getY();
+                float currentX = e.getX();
                 float dy = MathUtils.constrains(
                         0,
                         mPullHeight * 2,
@@ -213,7 +187,7 @@ class PullToRefreshLayout extends FrameLayout {
                     mHeader.getLayoutParams().height = (int) offsetY;
                     mHeader.requestLayout();
                     if (mPullToRefreshPullingListener != null) {
-                        mPullToRefreshPullingListener.onPulling(this, offsetY / mHeaderHeight);
+                        mPullToRefreshPullingListener.onPulling(this, offsetY / mHeaderHeight, currentX);
                     }
                 }
                 return true;
@@ -253,7 +227,7 @@ class PullToRefreshLayout extends FrameLayout {
     }
 
 
-    interface PullToRefreshListener {
+    public interface PullToRefreshListener {
 
         void onRefresh(PullToRefreshLayout pullToRefreshLayout);
 
@@ -261,7 +235,7 @@ class PullToRefreshLayout extends FrameLayout {
 
     interface PullToRefreshPullingListener {
 
-        void onPulling(PullToRefreshLayout pullToRefreshLayout, float fraction);
+        void onPulling(PullToRefreshLayout pullToRefreshLayout, float fraction, float pointXPosition);
 
         void onReleasing(PullToRefreshLayout pullToRefreshLayout, float fraction);
 
