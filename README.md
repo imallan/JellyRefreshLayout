@@ -15,9 +15,7 @@ repositories {
     }
 }
 dependencies {
-    compile 'com.github.allan1st:JellyRefreshLayout:1.0.0'
-    // or pre-release
-    // compile 'com.github.allan1st:JellyRefreshLayout:1.1.0'
+    compile 'com.github.allan1st:JellyRefreshLayout:2.0'
 }
 ```
 or Maven
@@ -32,7 +30,7 @@ or Maven
 <dependency>
     <groupId>com.github.allan1st</groupId>
     <artifactId>JellyRefreshLayout</artifactId>
-    <version>1.0.0</version>
+    <version>2.0</version>
 </dependency>
 ```
 
@@ -46,6 +44,9 @@ Wrap any RecyclerView/ScrollView/ListView with JellyRefreshLayout
     android:text="@string/your_loading_text"
     android:textColor="@color/your_loading_text_color"
     app:jellyColor="@color/your_jelly_color"
+    app:pullHeight="128dp"
+    app:triggerHeight="96dp"
+    app:headerHeight="56dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -67,7 +68,7 @@ mJellyLayout.setRefreshListener(new JellyRefreshLayout.JellyRefreshListener() {
 ```
 and finish refreshing when you are done:
 ```java
-mJellyLayout.finishRefreshing();
+mJellyLayout.setRefreshing(false); // true to start refreshing programmatically
 ```
 
 You can also find more usages in the sample app included
