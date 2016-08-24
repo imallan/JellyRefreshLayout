@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -20,9 +21,11 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:elevation="4dp"
-        android:text="@string/loading">
-        <!--android:textColor="@android:color/white"-->
-        <!--app:jellyColor="@color/primary">-->
+        android:text="@string/loading"
+        app:headerHeight="48dp"
+        app:jellyColor="@color/primary"
+        app:pullHeight="160dp"
+        app:triggerHeight="108dp">
 
         <ScrollView
             android:layout_width="match_parent"

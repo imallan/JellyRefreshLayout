@@ -10,23 +10,20 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
-public class JellyLayout extends FrameLayout {
-    private static final String TAG = "JellyLayout";
+class JellyLayout extends FrameLayout {
 
     private Paint mPaint;
     private Path mPath;
     @ColorInt
     private int mColor = Color.GRAY;
-    // FIXME: 23/08/2016 hardcoded
-    private int mHeaderHeight = 200;
-    private int mPullHeight = 400;
     private ViewOutlineProvider mViewOutlineProvider;
     private float mPointX;
+    float mHeaderHeight = 0;
+    float mPullHeight = 0;
 
     public JellyLayout(Context context) {
         this(context, null);
@@ -71,34 +68,38 @@ public class JellyLayout extends FrameLayout {
         if (needInvalidate) invalidate();
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        drawPulling(canvas);
+    }
+
+    private void drawPulling(Canvas canvas) {
+
         final int width = canvas.getWidth();
-        Log.d(TAG, "onDraw: height: " + getHeight());
-
-        mHeaderHeight = getHeight() / 2;
-        mPullHeight = getHeight();
-
+        final float mDisplayX = (mPointX - width / 2f) * 0.5f + width / 2f;
         mPaint.setColor(mColor);
 
-        float mDisplayX = (mPointX - width / 2f) * 0.5f + width / 2f;
+        int headerHeight = (int) mHeaderHeight;
+        int pullHeight = (int) mPullHeight;
 
         mPath.rewind();
         mPath.moveTo(0, 0);
-        mPath.lineTo(0, mHeaderHeight);
-        mPath.quadTo(mDisplayX, mPullHeight, width, mHeaderHeight);
+        mPath.lineTo(0, headerHeight);
+        mPath.quadTo(mDisplayX, pullHeight, width, headerHeight);
         mPath.lineTo(width, 0);
         mPath.close();
 
         canvas.drawPath(mPath, mPaint);
 
-        canvas.drawLine(0, mPullHeight, width, mPullHeight, mPaint);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setOutlineProvider(mViewOutlineProvider);
         }
 
+    }
+
+    public void setHeaderHeight(float headerHeight) {
+        mHeaderHeight = headerHeight;
     }
 }
